@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Banner Bíblico | Fonte Responsiva 600x600</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.0">
+    <title>Banner Bíblico | Responsivo 600x600</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
@@ -11,7 +11,7 @@
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* [O CSS permanece EXATAMENTE O MESMO, sem alterações] */
+        /* ===== ESTILOS GERAIS (MANTIDOS, COM PEQUENOS AJUSTES) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +19,6 @@
             transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
-        /* Tema claro */
         :root {
             --bg-gradient-start: #f5f0e7;
             --bg-gradient-end: #e8dfd3;
@@ -52,7 +51,6 @@
             --input-text: #2c241a;
         }
 
-        /* Tema escuro */
         body.dark {
             --bg-gradient-start: #1a1a1e;
             --bg-gradient-end: #111114;
@@ -90,7 +88,7 @@
             justify-content: center;
             align-items: center;
             font-family: 'Inter', sans-serif;
-            padding: 2rem 1.5rem;
+            padding: 1.5rem 1rem;
         }
 
         .banner-container {
@@ -98,16 +96,20 @@
             width: 100%;
             margin: 0 auto;
             animation: fadeSlideUp 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .header-title {
             text-align: center;
             margin-bottom: 1.5rem;
+            width: 100%;
         }
 
         .header-title h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
             font-weight: 600;
             color: var(--text-secondary);
             letter-spacing: -0.3px;
@@ -116,9 +118,10 @@
             gap: 12px;
             background: rgba(255,248,235,0.7);
             backdrop-filter: blur(4px);
-            padding: 0.4rem 1.8rem;
+            padding: 0.4rem 1.5rem;
             border-radius: 80px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            white-space: nowrap;
         }
         body.dark .header-title h1 {
             background: rgba(30,30,36,0.8);
@@ -138,21 +141,23 @@
             font-size: 0.85rem;
         }
 
-        /* BANNER QUE SERÁ CAPTURADO - TAMANHO FIXO 600x600 */
+        /* ===== BANNER (AGORA RESPONSIVO) ===== */
         .banner-card {
             background: var(--card-bg);
             border-radius: 48px;
             border: 4px solid var(--card-border);
             box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,240,0.1);
-            padding: 2rem 1.8rem 1.5rem 1.8rem;
+            padding: clamp(1.2rem, 5%, 2rem) clamp(1rem, 4%, 1.8rem);
             position: relative;
-            width: 600px;
-            height: 600px;
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;      /* mantém formato quadrado */
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             overflow: hidden;
+            transition: width 0.2s ease, height 0.2s ease;
         }
 
         .banner-card::before {
@@ -178,13 +183,12 @@
         }
 
         .verse-icon {
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 8vw, 2.2rem);
             color: var(--icon-color);
             opacity: 0.8;
             flex-shrink: 0;
         }
 
-        /* Container do texto com altura flexível */
         .verse-text-container {
             flex: 1;
             display: flex;
@@ -222,16 +226,15 @@
             font-family: 'Inter', monospace;
             border: 1px solid var(--citation-border);
             backdrop-filter: blur(2px);
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 3vw, 1rem);
             flex-shrink: 0;
             align-self: center;
         }
 
-        /* RODAPÉ / MARCA D'ÁGUA */
         .watermark-footer {
             margin-top: 0.6rem;
             text-align: center;
-            font-size: 0.65rem;
+            font-size: clamp(0.55rem, 2vw, 0.65rem);
             font-weight: 400;
             color: var(--watermark-color);
             opacity: 0.7;
@@ -258,11 +261,11 @@
             padding: 1.2rem 1.5rem;
             margin-top: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            max-width: 600px;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 600px;
         }
+
+        /* (demais estilos mantidos exatamente como no original) */
         .custom-title {
             display: flex;
             align-items: center;
@@ -337,7 +340,6 @@
             text-align: center;
         }
 
-        /* Botões principais */
         .action-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -346,8 +348,6 @@
             margin: 1.5rem 0 0.5rem;
             max-width: 600px;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .btn {
@@ -443,8 +443,6 @@
             flex-wrap: wrap;
             max-width: 600px;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .theme-toggle {
@@ -474,6 +472,7 @@
             transform: scale(1.02);
         }
 
+        /* Loading */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -514,31 +513,51 @@
             to { opacity: 1; transform: translateY(0);}
         }
 
-        @media (max-width: 660px) {
-            .banner-container {
-                overflow-x: auto;
-            }
-            .banner-card {
-                margin: 0 auto;
-            }
+        /* Splash screen */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: #0d1117;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: opacity 0.5s ease;
         }
+        .splash-container {
+            border: 2px solid #58a6ff;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #0d1117;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+        .splash-icon { font-size: 60px; color: #79c0ff; margin-bottom: 10px; }
+        .splash-title { color: #c9d1d9; font-size: clamp(1.2rem, 6vw, 1.5rem); font-weight: bold; margin: 10px 0 5px; }
+        .splash-sub1 { color: #58a6ff; font-size: 14px; font-weight: bold; margin: 0; }
+        .splash-sub2 { color: #79c0ff; font-size: 12px; margin: 5px 0 15px; }
+        .splash-load-text { color: #c9d1d9; font-size: 12px; margin-bottom: 8px; }
+        .progress-bar {
+            width: 260px; max-width: 80%; height: 12px;
+            background-color: #30363d; border-radius: 6px;
+            overflow: hidden; margin: 0 auto; position: relative;
+        }
+        .progress-fill {
+            width: 50%; height: 100%; background-color: #58a6ff;
+            border-radius: 6px; position: absolute;
+            animation: loadingBar 1.5s infinite ease-in-out;
+        }
+        @keyframes loadingBar { 0% { left: -50%; } 50% { left: 100%; } 100% { left: -50%; } }
     </style>
-
-<style id="wv-splash-css">
-    #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0d1117; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: opacity 0.5s ease; }
-    .splash-container { border: 2px solid #58a6ff; padding: 40px 60px; text-align: center; border-radius: 8px; background-color: #0d1117; box-shadow: 0 0 20px rgba(88, 166, 255, 0.2); }
-    .splash-icon { font-size: 60px; color: #79c0ff; margin-bottom: 10px; }
-    .splash-title { color: #c9d1d9; font-size: 24px; font-weight: bold; margin: 10px 0 5px 0; }
-    .splash-sub1 { color: #58a6ff; font-size: 14px; font-weight: bold; margin: 0; }
-    .splash-sub2 { color: #79c0ff; font-size: 12px; margin: 5px 0 15px 0; }
-    .splash-load-text { color: #c9d1d9; font-size: 12px; margin-bottom: 8px; }
-    .progress-bar { width: 260px; height: 12px; background-color: #30363d; border-radius: 6px; overflow: hidden; margin: 0 auto; position: relative; }
-    .progress-fill { width: 50%; height: 100%; background-color: #58a6ff; border-radius: 6px; position: absolute; animation: loadingBar 1.5s infinite ease-in-out; }
-    @keyframes loadingBar { 0% { left: -50%; } 50% { left: 100%; } 100% { left: -50%; } }
-</style>
 </head>
 <body>
 
+<!-- SPLASH SCREEN -->
 <div id="splash-screen">
     <div class="splash-container">
         <div class="splash-icon">⚡</div>
@@ -550,6 +569,7 @@
     </div>
 </div>
 
+<!-- CONTEÚDO PRINCIPAL -->
 <div class="banner-container">
     <div class="header-title">
         <h1>
@@ -560,7 +580,7 @@
         <div class="sub">Palavras de ânimo & esperança | Tema: <span id="themeLabel">Claro</span></div>
     </div>
 
-    <!-- BANNER COM TAMANHO FIXO 600x600 E FONTE RESPONSIVA -->
+    <!-- BANNER (agora responsivo) -->
     <div class="banner-card" id="bannerToCapture">
         <div class="verse-message">
             <div class="verse-icon">
@@ -608,10 +628,11 @@
             </button>
         </div>
         <div class="custom-hint">
-            <i class="fas fa-info-circle"></i> Digite sua própria passagem bíblica. O tamanho da fonte se ajusta automaticamente para preencher o espaço!
+            <i class="fas fa-info-circle"></i> Digite sua própria passagem bíblica. O tamanho da fonte se ajusta automaticamente!
         </div>
     </div>
 
+    <!-- BOTÕES DE AÇÃO -->
     <div class="action-buttons">
         <button class="btn btn-primary" id="randomVerseBtn">
             <i class="fas fa-sync-alt"></i> Nova
@@ -639,6 +660,7 @@
     </div>
 </div>
 
+<!-- TOGGLE TEMA -->
 <div class="theme-toggle" id="themeToggleBtn">
     <i class="fas fa-moon" id="themeIcon"></i>
     <span id="themeToggleText">Tema Escuro</span>
@@ -648,7 +670,7 @@
     (function() {
         "use strict";
 
-        // ======================== VERSÍCULOS PRÉ-DEFINIDOS ========================
+        // ======================== VERSÍCULOS ========================
         const bibleVerses = [
             { text: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" },
             { text: "O Senhor é o meu pastor; nada me faltará.", ref: "Salmos 23:1" },
@@ -692,15 +714,14 @@
         const resetToDailyBtn = document.getElementById('resetToDailyBtn');
         const customVerseText = document.getElementById('customVerseText');
         const customVerseRefInput = document.getElementById('customVerseRef');
+        const bannerCard = document.getElementById('bannerToCapture');
 
         let currentVerseObj = null;
         let resizeTimeout = null;
 
-        // ---------- FUNÇÃO PARA AJUSTAR FONTE RESPONSIVAMENTE ----------
+        // ---------- AJUSTE DE FONTE RESPONSIVO ----------
         function adjustFontSizeToFit() {
-            // Garantir que temos uma referência de container válida
             if (!verseContainer || !verseTextDiv) return;
-
             const containerHeight = verseContainer.clientHeight;
             if (containerHeight === 0) return;
 
@@ -709,53 +730,38 @@
             let currentFontSize = maxFontSize;
 
             verseTextDiv.style.fontSize = `${currentFontSize}px`;
-            
-            // Loop para encontrar o tamanho ideal
             while (currentFontSize > minFontSize && verseTextDiv.scrollHeight > containerHeight) {
                 currentFontSize -= 1;
                 verseTextDiv.style.fontSize = `${currentFontSize}px`;
             }
-
-            // Pequeno ajuste de segurança
             if (verseTextDiv.scrollHeight > containerHeight) {
                 verseTextDiv.style.fontSize = `${minFontSize}px`;
             }
         }
 
-        // Configurar Observers para ajuste automático de fonte
         function setupFontAdjustment() {
-            // Usar ResizeObserver para monitorar mudanças no tamanho do container
             if (window.ResizeObserver) {
                 const resizeObserver = new ResizeObserver(() => {
-                    // Debounce simples para evitar múltiplas chamadas
                     clearTimeout(resizeTimeout);
                     resizeTimeout = setTimeout(adjustFontSizeToFit, 50);
                 });
                 if (verseContainer) resizeObserver.observe(verseContainer);
             }
-
-            // Ajustar ao redimensionar a janela
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(adjustFontSizeToFit, 100);
             });
-
-            // Ajuste inicial após a renderização
             setTimeout(adjustFontSizeToFit, 100);
         }
 
         // ---------- TEMA ----------
         function setTheme(isDark) {
             document.body.classList.toggle('dark', isDark);
-            
             const theme = isDark ? 'dark' : 'light';
             localStorage.setItem('bibleBannerTheme', theme);
-            
             themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
             themeToggleText.innerText = isDark ? 'Tema Claro' : 'Tema Escuro';
             if(themeLabelSpan) themeLabelSpan.innerText = isDark ? 'Escuro' : 'Claro';
-            
-            // Reajustar fonte após troca de tema
             setTimeout(adjustFontSizeToFit, 50);
         }
 
@@ -768,7 +774,7 @@
             setTheme(savedTheme === 'dark');
         }
 
-        // ---------- VERSÍCULO DIÁRIO ----------
+        // ---------- VERSÍCULOS ----------
         function getDailyVerseIndex() {
             const today = new Date();
             const start = new Date(today.getFullYear(), 0, 0);
@@ -782,49 +788,40 @@
             if (!verseObj) return;
             const container = document.querySelector('.verse-message');
             container.classList.add('fade-update');
-            
             verseContentEl.innerText = verseObj.text;
             citationRefEl.innerText = verseObj.ref;
             currentVerseObj = { ...verseObj };
-            
-            // Ajustar fonte após atualizar o conteúdo
             setTimeout(() => {
                 adjustFontSizeToFit();
                 container.classList.remove('fade-update');
             }, 50);
         }
-        
+
         function showDailyVerse() {
             const dailyIdx = getDailyVerseIndex();
             updateBanner(bibleVerses[dailyIdx]);
             customVerseText.value = '';
             customVerseRefInput.value = '';
         }
-        
+
         function showRandomVerse() {
             let newIndex = Math.floor(Math.random() * bibleVerses.length);
             updateBanner(bibleVerses[newIndex]);
             customVerseText.value = '';
             customVerseRefInput.value = '';
         }
-        
+
         function applyCustomVerse() {
             let customText = customVerseText.value.trim();
             let customRef = customVerseRefInput.value.trim();
-            
             if (!customText && !customRef) {
-                alert('📖 Por favor, preencha pelo menos um dos campos (frase ou referência).');
+                alert('📖 Por favor, preencha pelo menos um dos campos.');
                 return;
             }
-            
-            // Valores padrão se um dos campos estiver vazio
             if (!customText) customText = "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito...";
             if (!customRef) customRef = "João 3:16";
-            
             const newVerse = { text: customText, ref: customRef };
             updateBanner(newVerse);
-            
-            // Feedback visual no botão
             const originalHTML = applyCustomBtn.innerHTML;
             applyCustomBtn.innerHTML = '<i class="fas fa-check"></i> Aplicado!';
             applyCustomBtn.disabled = true;
@@ -833,7 +830,7 @@
                 applyCustomBtn.disabled = false;
             }, 2000);
         }
-        
+
         async function copyBannerMessage() {
             if (!currentVerseObj) return;
             const todayDate = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -847,7 +844,7 @@
                 alert("Copie manualmente: " + bannerMessage);
             }
         }
-        
+
         function setCurrentDate() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -855,13 +852,25 @@
             formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
             currentDateSpan.innerText = formatted;
         }
-        
-        // ---------- GERAR IMAGEM 600x600 ----------
+
+        // ---------- GERAÇÃO DE IMAGEM 600x600 (com restauração de tamanho) ----------
         async function generateSquareImage() {
-            const bannerElement = document.getElementById('bannerToCapture');
-            if (!bannerElement) throw new Error('Banner não encontrado');
-            
-            const canvas = await html2canvas(bannerElement, {
+            // Guarda estilos originais
+            const originalWidth = bannerCard.style.width;
+            const originalHeight = bannerCard.style.height;
+            const originalMaxWidth = bannerCard.style.maxWidth;
+            const originalAspectRatio = bannerCard.style.aspectRatio;
+
+            // Força tamanho fixo 600x600 para captura perfeita
+            bannerCard.style.width = '600px';
+            bannerCard.style.height = '600px';
+            bannerCard.style.maxWidth = 'none';
+            bannerCard.style.aspectRatio = 'auto';
+
+            // Aguarda reflow
+            await new Promise(resolve => setTimeout(resolve, 30));
+
+            const canvas = await html2canvas(bannerCard, {
                 scale: 2,
                 backgroundColor: null,
                 useCORS: false,
@@ -871,22 +880,26 @@
                 windowWidth: 600,
                 windowHeight: 600
             });
-            
+
+            // Restaura estilos responsivos
+            bannerCard.style.width = originalWidth;
+            bannerCard.style.height = originalHeight;
+            bannerCard.style.maxWidth = originalMaxWidth;
+            bannerCard.style.aspectRatio = originalAspectRatio;
+
             const finalCanvas = document.createElement('canvas');
             finalCanvas.width = 600;
             finalCanvas.height = 600;
             const ctx = finalCanvas.getContext('2d');
             ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 600, 600);
-            
             return finalCanvas;
         }
-        
+
         async function downloadImage() {
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'loading-overlay';
             loadingDiv.innerHTML = '<div class="loading-spinner"></div><p>Gerando imagem 600x600...</p>';
             document.body.appendChild(loadingDiv);
-            
             try {
                 const squareCanvas = await generateSquareImage();
                 const link = document.createElement('a');
@@ -894,7 +907,6 @@
                 link.download = `banner_biblico_${refName}.png`;
                 link.href = squareCanvas.toDataURL('image/png');
                 link.click();
-                
                 const originalText = downloadBtn.innerHTML;
                 downloadBtn.innerHTML = '<i class="fas fa-check"></i> Salvo!';
                 setTimeout(() => { downloadBtn.innerHTML = originalText; }, 2000);
@@ -905,18 +917,16 @@
                 loadingDiv.remove();
             }
         }
-        
+
         async function shareImage() {
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'loading-overlay';
             loadingDiv.innerHTML = '<div class="loading-spinner"></div><p>Preparando imagem...</p>';
             document.body.appendChild(loadingDiv);
-            
             try {
                 const squareCanvas = await generateSquareImage();
                 const blob = await new Promise(resolve => squareCanvas.toBlob(resolve, 'image/png'));
                 const file = new File([blob], 'banner_biblico.png', { type: 'image/png' });
-                
                 if (navigator.share) {
                     await navigator.share({
                         title: 'Banner Bíblico',
@@ -940,15 +950,14 @@
                 loadingDiv.remove();
             }
         }
-        
-        // ---------- INICIALIZAÇÃO E EVENTOS ----------
+
+        // ---------- INICIALIZAÇÃO ----------
         function init() {
             setCurrentDate();
             showDailyVerse();
             loadSavedTheme();
             setupFontAdjustment();
-            
-            // Event Listeners
+
             randomBtn.addEventListener('click', showRandomVerse);
             dailyBtn.addEventListener('click', showDailyVerse);
             copyBtn.addEventListener('click', copyBannerMessage);
@@ -959,12 +968,13 @@
             applyCustomBtn.addEventListener('click', applyCustomVerse);
             resetToDailyBtn.addEventListener('click', showDailyVerse);
         }
-        
+
         init();
     })();
 </script>
 
-<script id="wv-splash-js">
+<script>
+    // Splash screen
     window.addEventListener('load', function() {
         setTimeout(function() {
             var splash = document.getElementById('splash-screen');
