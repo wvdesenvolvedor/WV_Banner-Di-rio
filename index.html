@@ -11,7 +11,7 @@
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* ===== ESTILOS GERAIS (MANTIDOS, COM PEQUENOS AJUSTES) ===== */
+        /* ===== ESTILOS GERAIS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -141,23 +141,30 @@
             font-size: 0.85rem;
         }
 
-        /* ===== BANNER (AGORA RESPONSIVO) ===== */
+        /* ===== BANNER (RESPONSIVO COM PADDING AJUSTADO) ===== */
         .banner-card {
             background: var(--card-bg);
             border-radius: 48px;
             border: 4px solid var(--card-border);
             box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,240,0.1);
-            padding: clamp(1.2rem, 5%, 2rem) clamp(1rem, 4%, 1.8rem);
+            /* Padding aumentado para garantir que texto não encoste na borda tracejada */
+            padding: 2rem 2rem 1.5rem 2rem;
             position: relative;
             width: 100%;
             max-width: 600px;
-            aspect-ratio: 1 / 1;      /* mantém formato quadrado */
+            aspect-ratio: 1 / 1;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             overflow: hidden;
-            transition: width 0.2s ease, height 0.2s ease;
+        }
+
+        /* Ajuste de padding para telas menores */
+        @media (max-width: 480px) {
+            .banner-card {
+                padding: 1.8rem 1.5rem 1.2rem 1.5rem;
+            }
         }
 
         .banner-card::before {
@@ -180,6 +187,9 @@
             flex-direction: column;
             justify-content: center;
             gap: 0.3rem;
+            /* Garante que todo conteúdo fique dentro da área útil */
+            width: 100%;
+            max-width: 100%;
         }
 
         .verse-icon {
@@ -195,6 +205,9 @@
             align-items: center;
             justify-content: center;
             min-height: 0;
+            width: 100%;
+            /* Margem adicional para evitar que texto chegue muito perto da borda */
+            padding: 0.5rem 0;
         }
 
         .verse-text {
@@ -204,6 +217,10 @@
             line-height: 1.35;
             width: 100%;
             transition: font-size 0.1s ease;
+            /* Quebra de palavra para textos muito longos */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
         }
 
         .verse-text p {
@@ -229,6 +246,7 @@
             font-size: clamp(0.8rem, 3vw, 1rem);
             flex-shrink: 0;
             align-self: center;
+            max-width: 90%;
         }
 
         .watermark-footer {
@@ -265,7 +283,6 @@
             max-width: 600px;
         }
 
-        /* (demais estilos mantidos exatamente como no original) */
         .custom-title {
             display: flex;
             align-items: center;
@@ -580,7 +597,7 @@
         <div class="sub">Palavras de ânimo & esperança | Tema: <span id="themeLabel">Claro</span></div>
     </div>
 
-    <!-- BANNER (agora responsivo) -->
+    <!-- BANNER -->
     <div class="banner-card" id="bannerToCapture">
         <div class="verse-message">
             <div class="verse-icon">
@@ -656,7 +673,7 @@
 
     <div class="footer-date">
         <span><i class="far fa-calendar-alt"></i> <span id="currentDate"></span></span>
-        <span><i class="fas fa-hands-praying"></i> “Renova as tuas forças”</span>
+        <span><i class="fas fa-hands-praying"></i> "Renova as tuas forças"</span>
     </div>
 </div>
 
@@ -719,23 +736,39 @@
         let currentVerseObj = null;
         let resizeTimeout = null;
 
-        // ---------- AJUSTE DE FONTE RESPONSIVO ----------
+        // ---------- AJUSTE DE FONTE RESPONSIVO (MELHORADO) ----------
         function adjustFontSizeToFit() {
             if (!verseContainer || !verseTextDiv) return;
+            
+            // Obtém altura disponível considerando padding interno
             const containerHeight = verseContainer.clientHeight;
             if (containerHeight === 0) return;
 
-            const minFontSize = 18;
-            const maxFontSize = 52;
+            // Reset para tamanho máximo
+            const minFontSize = 16;
+            const maxFontSize = 48;
             let currentFontSize = maxFontSize;
 
             verseTextDiv.style.fontSize = `${currentFontSize}px`;
+            
+            // Reduz fonte até caber na altura do container
             while (currentFontSize > minFontSize && verseTextDiv.scrollHeight > containerHeight) {
                 currentFontSize -= 1;
                 verseTextDiv.style.fontSize = `${currentFontSize}px`;
             }
+            
+            // Verificação adicional de segurança
             if (verseTextDiv.scrollHeight > containerHeight) {
                 verseTextDiv.style.fontSize = `${minFontSize}px`;
+            }
+            
+            // Verifica também largura para evitar overflow horizontal
+            const containerWidth = verseContainer.clientWidth;
+            if (verseTextDiv.scrollWidth > containerWidth) {
+                while (currentFontSize > minFontSize && verseTextDiv.scrollWidth > containerWidth) {
+                    currentFontSize -= 1;
+                    verseTextDiv.style.fontSize = `${currentFontSize}px`;
+                }
             }
         }
 
@@ -834,7 +867,7 @@
         async function copyBannerMessage() {
             if (!currentVerseObj) return;
             const todayDate = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
-            const bannerMessage = `📖 “${currentVerseObj.text}”\n— ${currentVerseObj.ref} —\n\n🙏 ${todayDate}\n✨ @wellingtonviana.pego`;
+            const bannerMessage = `📖 "${currentVerseObj.text}"\n— ${currentVerseObj.ref} —\n\n🙏 ${todayDate}\n✨ @wellingtonviana.pego`;
             try {
                 await navigator.clipboard.writeText(bannerMessage);
                 const originalText = copyBtn.innerHTML;
@@ -853,21 +886,18 @@
             currentDateSpan.innerText = formatted;
         }
 
-        // ---------- GERAÇÃO DE IMAGEM 600x600 (com restauração de tamanho) ----------
+        // ---------- GERAÇÃO DE IMAGEM 600x600 ----------
         async function generateSquareImage() {
-            // Guarda estilos originais
             const originalWidth = bannerCard.style.width;
             const originalHeight = bannerCard.style.height;
             const originalMaxWidth = bannerCard.style.maxWidth;
             const originalAspectRatio = bannerCard.style.aspectRatio;
 
-            // Força tamanho fixo 600x600 para captura perfeita
             bannerCard.style.width = '600px';
             bannerCard.style.height = '600px';
             bannerCard.style.maxWidth = 'none';
             bannerCard.style.aspectRatio = 'auto';
 
-            // Aguarda reflow
             await new Promise(resolve => setTimeout(resolve, 30));
 
             const canvas = await html2canvas(bannerCard, {
@@ -881,7 +911,6 @@
                 windowHeight: 600
             });
 
-            // Restaura estilos responsivos
             bannerCard.style.width = originalWidth;
             bannerCard.style.height = originalHeight;
             bannerCard.style.maxWidth = originalMaxWidth;
